@@ -1,0 +1,39 @@
+--===========================--
+    RNC COMPRESSED GRAPHICS
+--===========================--
+
+$0D3B1C ... RRz3 helmet (did I guess the word?)
+$0D3FE2 ... RRz axe piece (not complete)
+$0D4096 ... RRz3 foot
+$0D440A ... RRz3 bullet
+$0FFDBE ... RRz3 arm ball?
+$0D43BC ... Shadow when Sonic is spinning. Yes, serious...
+$14915A ... ???
+$143E74 ... Flickies' shadow
+$143ED8 ... Ring blink and dirt
+$145232 ... Tails Special Stage floor
+$14A31C ... Knuckles Special Stage floor
+$14DC3E ... Knuckles Special Stage background
+$14F0EC ... Special Stage rings
+$14F2AC ... Special Stage spikeballs
+$151180 ... Special Stage: "COLLECT RINGS TO GO"
+$15DEBA ... Title card graphics (letters, numbers and "ACT")
+$15E3E6 ... 8x16 characters (letters, numbers, : and /)
+$15E5E2 ... Graphics that cover the letters in the score tally
+$15E610 ... Text: "Demo mode"
+$15E6A8 ... Cutscene text font
+$165530 ... Pre-GGz1 video, 1st screen: clouds
+$166482 ... Pre-GGz1 video, 1st screen: flickies
+$16918C ... Pre-GGz1 video, 2nd screen: scenery and Eggman
+$17538E ... Pre-GGz1 video, 5th screen: scenery and big ring
+$178B4E ... ??? (I think I know what it is but don't have time to check --Sik)
+$18424A ... Try Again: Robotnik
+$1A7EB4 ... Traveller's Tales logo and palettes 
+$255420 ... Numbers from Continue screen
+$25DB5C ... Menu and Continue screens background
+
+--===========================--
+    RNC COMPRESSED TILEMAPS
+--===========================--
+
+$262934 ... Menu and Continue screens background

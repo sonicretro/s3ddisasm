@@ -1,0 +1,18 @@
+FRAME DATA:
+
++$00 ... dwords ... Table of offsets to compressed data.
+
+OFFSETED BY +$00 DATA, +$04 DATA, ETC
+
++$00 ... dword ... RNC Method 2 compressed data size.
++$04 ... word ... Decompressed Checksum
++$06 ... word ... Compressed Checksum
++$08 ... byte ... Leeway needed to decompress file
++$09 ... byte ... Amount of pack chunks
++$0a ... bytes ... RNC Method 2 compressed data.
+
+LOCATIONS:
+
+$184aee: Sega Screen
+$1b055c: Intro FMV (Zooming into Flickies' Island)
+$1d3ba4: Intro FMV (Sonic running with flickies)

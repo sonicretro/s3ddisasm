@@ -1,0 +1,31 @@
+--===========--
+    IN-GAME
+--===========--
+
+$0250C2 ... Main sprites #1 (Sonic)
+$01F08E ... Main sprites #2 (most stages)
+$025142 ... Eggman
+
+--==================--
+    LEVEL-SPECIFIC
+--==================--
+
+$025082 ... Green Grove palette #1
+$0250A2 ... Green Grove palette #2
+
+$0251A2 ... Rusty Ruins palette #1
+$0251C2 ... Rusty Ruins palette #2
+$0251E2 ... Rusty Ruins palette #3
+
+$025242 ... Volcano Valley palette #1
+$025262 ... Volcano Valley palette #2
+$025282 ... Volcano Valley palette #3
+
+$0252A2 ... Spring Stadium palette #1
+$0252C2 ... Spring Stadium palette #2
+
+--=========--
+    FMV's
+--=========--
+$01ED58 ... Intro part 1
+$01ED78 ... Intro part 2

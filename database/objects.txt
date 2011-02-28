@@ -1,0 +1,32 @@
+--=======================--
+    OBJECT ENTRY FORMAT
+--=======================--
+
++$04 ... 16-bit ........ ???
++$06 ... Fixed 16.16 ... Object's X coordinate
++$0A ... Fixed 16.16 ... Object's Y coordinate
++$0E ... Fixed 16.16 ... Object's Z coordinate
++$1C ... Signed word ... Object's frame graphic index
++$1E ... Signed word ... Object's current animation frame
++$22 ... Signed word ... Object type ID?
++$24 ... 16-bit ........ ???
++$2A ... 32-bit ........ ???
++$2E ... 16-bit ........ ???
++$30 ... 16-bit ........ ???
++$32 ... 16-bit ........ ???
++$34 ... 32-bit ........ ???
+
+--================--
+    OBJECT TYPES
+--================--
+
+$0002 ... Ant badnik from GGz
+$0004 ... Spikeball from GGz
+$0006 ... Badnik with spikeball from GGz (body)
+$0008 ... Snake badnik from GGz (head)
+$000A ... Snake badnik from GGz (body)
+$000C ... Springs
+$000E ... Floor gate
+$0010 ... Breakable rock from GGz2
+$0012 ... Spinning thing (the one that makes Sonic spindash)
+$0014 ... Breakable wall from GGz

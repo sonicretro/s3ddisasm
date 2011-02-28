@@ -1,0 +1,53 @@
+--=========--
+    SONIC
+--=========--
+
+Base address: FFC1E6
+
++$06 ... FFC1EC ... Fixed comma 16.16 ... X coordinate
++$0A ... FFC1F0 ... Fixed comma 16.16 ... Y coordinate
++$0E ... FFC1F4 ... Fixed comma 16.16 ... Z coordinate
++$12 ... FFC1F8 ... Fixed comma 16.16 ... X speed
++$16 ... FFC1FC ... Fixed comma 16.16 ... Y speed
++$1A ... FFC200 ... Fixed comma 16.16 ... Z speed
++$1E ... FFC204 ... Fixed comma 16.16 ... General speed
++$3C ... FFC222 ... 16-bit bitfield ..... Flags for Sonic's sprite
++$44 ... FFC22A ... Signed word ......... 1 if Sonic is on the ground, 0 otherwise
++$46 ... FFC22C ... Signed word ......... -1 if pressed jump once, 2 if twice, 0 otherwise
++$4C ... FFC232 ... Signed word ......... Height of the floor Sonic is on, or -1 if not controlling collisions
++$90 ... FFC276 ... Signed word ......... Previous sprite index (4 byte step)
++$92 ... FFC278 ... Signed word ......... Current sprite index (4 byte step)
++$94 ... FFC27A ... Signed word ......... Current animation
+
+--============--
+    FLICKIES
+--============--
+
+$FF0A8E ... Signed word ......... Number of flickies chasing Sonic
+$FF0A92 ... Signed word ......... Number of saved flickies
+
+--============--
+    MONITORS
+--============--
+
+$FF0A86 ... Signed word ......... Effect of the monitor just broken
+
+--=================--
+    MISCELLANEOUS
+--=================--
+
+$FF0410 ... Word ................ Non-zero when in Demo Mode
+$FF0678 ... Signed word ......... Current level
+$FF0680 ... Signed word ......... Number of lives
+$FF06AA ... Signed word ......... Amount of continues
+$FF084E ... Signed word ......... Scroll X coordinate
+$FF0850 ... Signed word ......... Scroll Y coordinate
+$FF0A0C ... Signed word? ........ Number of active (on screen) objects
+$FF0A56 ... BCD word ............ Number of rings (BCD, for HUD)
+$FF0A5A ... Signed word ......... Number of rings (real amount)
+$FF0AC0 ... Signed word ......... Index of shield frame
+$FF0AC2 ... Word ................ Shield Sonic is currently using
+$FF0AF4 ... Word ................ Toggles LSB every frame. Used for blinking
+$FFC262 ... Unsigned word ....... Invincibility time left
+$FFC264 ... Unsigned word ....... Supersneakers time left
+$FFCCD2 ... Array ............... Object data

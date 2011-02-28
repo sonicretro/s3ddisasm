@@ -1,0 +1,199 @@
+--=========================--
+    UNCOMPRESSED GRAPHICS
+--=========================--
+
+$033B42 ... Vertical spring
+$034DB6 ... Spindash thingy
+$03D0C2 ... Big ring
+$0A1460 ... Bullets
+$0A5908 ... Eggman (boss)
+$13C7D8 ... Monitor screens
+$13CDD8 ... Blue shield
+$13E7D8 ... Yellow shield
+$1401D8 ... Red shield
+$143F9E ... White sparkle
+$14401E ... Rings
+$14481E ... Rings' shadow
+$144C1E ... HUD numbers
+
+--===================--
+    VERTICAL SPRING
+--===================--
+
+$033B42 ... Frame #1
+$033E34 ... Frame #2
+$0340C6 ... Frame #3
+
+--===================--
+    SPINDASH THINGY
+--===================--
+
+NORTHEAST:
+
+$034DB6 ... Appear #1
+$034FA0 ... Appear #2
+$035258 ... Appear #3
+$035588 ... Appear #4
+$035998 ... Spin #1
+$035E48 ... Spin #2
+$0362F8 ... Spin #3
+
+SOUTHWEST:
+
+$036790 ... Appear #1
+$036974 ... Appear #2
+$036C1E ... Appear #3
+$036FA8 ... Appear #4
+$0372F2 ... Spin #1
+$0376FC ... Spin #2
+$037B06 ... Spin #3
+
+--============--
+    BIG RING
+--============--
+
+$03D0C2 ... Frame #1
+$03D566 ... Frame #2
+$03D9D0 ... Frame #3
+$03DD7A ... Frame #4
+$03E0B2 ... Frame #5
+$03E2E4 ... Frame #6
+$03E47C ... Frame #7
+$03E548 ... Frame #8
+
+--===========--
+    BULLETS
+--===========--
+
+$0A1460 ... GGz bomb piece (8 frames)
+$0A187C ... GGz small rock (16 frames)
+$0A207C ... RRz small rock (16 frames)
+$0A2878 ... GnGdz/PPz blastball (12 frames)
+$0A2E5C ... DDz snowball (16 frames)
+$0A367C ... DDz ice spike (16 frames)
+$0A3E7C ... ???* (8 frames)
+$0A427C ... ???* (16 frames)
+$0A4A7C ... SSz mini-spikeball (8 frames)
+$0A4E7C ... GnGdz beam (4 frames)
+$0A507C ... ???* (16 frames)
+
+* I can't recognise them right now due to lack of proper palette to use in
+TLP >_> That they're listed as ??? means nothing strange, those sprites are
+used in game.
+                                                         -- Sik the hedgehog
+
+--===================--
+    MONITOR SCREENS
+--===================--
+
+$13C7D8 ... Extra life
+$13C858 ... 10 rings
+$13C8D8 ... Blue shield
+$13C958 ... Yellow shield
+$13C9D8 ... Invincibility
+$13C458 ... Supersneakers
+$13CAD8 ... Red shield
+
+--===============--
+    BLUE SHIELD
+--===============--
+
+$13CDD8 ... Frame 1 (big)
+$13CF78 ... Frame 2 (big)
+$13D118 ... Frame 3 (big)
+$13D2B8 ... Frame 4 (big)
+$13D458 ... Frame 5 (big)
+$13D5F8 ... Frame 6 (big)
+$13D798 ... Frame 7 (big)
+$13D938 ... Frame 8 (big)
+$13DAD8 ... Frame 9 (big)
+$13DC78 ... Frame 10 (big)
+$13DE18 ... Frame 11 (big)
+$13DFB8 ... Frame 12 (big)
+$13E158 ... Frame 13 (big)
+$13E2F8 ... Frame 14 (big)
+$13E498 ... Frame 15 (big)
+$13E638 ... Frame 16 (big)
+
+$13CEF8 ... Frame 1 (small)
+$13D098 ... Frame 2 (small)
+$13D238 ... Frame 3 (small)
+$13D3D8 ... Frame 4 (small)
+$13D578 ... Frame 5 (small)
+$13D718 ... Frame 6 (small)
+$13D8B8 ... Frame 7 (small)
+$13DA58 ... Frame 8 (small)
+$13D8F8 ... Frame 9 (small)
+$13DD98 ... Frame 10 (small)
+$13DF38 ... Frame 11 (small)
+$13E0D8 ... Frame 12 (small)
+$13E278 ... Frame 13 (small)
+$13E418 ... Frame 14 (small)
+$13E5B8 ... Frame 15 (small)
+$13E758 ... Frame 16 (small)
+
+--===========--
+    SPARKLE
+--===========--
+
+$143F9E ... Frame 1 (white)
+$143FBE ... Frame 2 (white)
+$143FDE ... Frame 3 (white)
+$143FFE ... Frame 4 (white)
+
+--=========--
+    RINGS
+--=========--
+
+$14401E ... Frame 1
+$14409E ... Frame 2
+$14411E ... Frame 3
+$14419E ... Frame 4
+$14421E ... Frame 5
+$14429E ... Frame 6
+$14431E ... Frame 7
+$14439E ... Frame 8
+$14441E ... Frame 9
+$14449E ... Frame 10
+$14451E ... Frame 11
+$14459E ... Frame 12
+$14461E ... Frame 13
+$14469E ... Frame 14
+$14471E ... Frame 15
+$14479E ... Frame 16
+
+--=================--
+    RINGS' SHADOW
+--=================--
+
+$14481E ... Frame 1
+$14485E ... Frame 2
+$14489E ... Frame 3
+$1448DE ... Frame 4
+$14491E ... Frame 5
+$14495E ... Frame 6
+$14499E ... Frame 7
+$1449DE ... Frame 8
+$144A1E ... Frame 9
+$144A5E ... Frame 10
+$144A9E ... Frame 11
+$144ADE ... Frame 12
+$144B1E ... Frame 13
+$144B5E ... Frame 14
+$144B9E ... Frame 15
+$144BDE ... Frame 16
+
+--===============--
+    HUD NUMBERS
+--===============--
+
+$144C1E ... 0
+$144C5E ... 1
+$144C9E ... 2
+$144CDE ... 3
+$144D1E ... 4
+$144D5E ... 5
+$144D9E ... 6
+$144DDE ... 7
+$144E1E ... 8
+$144E5E ... 9

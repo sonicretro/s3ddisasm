@@ -1,0 +1,13 @@
+--==================--
+    NON-GAME STUFF
+--==================--
+
+$FF0000 ................... Stack ($400 bytes long)
+$FF0400 ... Pointer ....... Pointer to subroutine to use on VBI
+
+--===============--
+    SOUND STUFF
+--===============--
+
+$FF0AC4 ... Signed word ... Put a sound ID here and it'll be played
+$FF0AC6 ... Signed word ... Put a sound ID here and it'll be played

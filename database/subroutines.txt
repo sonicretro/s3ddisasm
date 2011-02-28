@@ -1,0 +1,37 @@
+--========================--
+    LEVEL INITIALIZATION
+--========================--
+
+$00DC36 ... Jump table
+
+$00DC92 ... Null level (just 'rts')
+
+$00EAD8 ... Green Grove 1
+$00E918 ... Green Grove 2
+$00DD12 ... Green Grove 3
+
+$007340 ... Rusty Ruins 1
+$007C0E ... Rusty Ruins 2
+$006D84 ... Rusty Ruins 3
+
+$009526 ... Spring Stadium 1
+$008DEA ... Spring Stadium 2
+$0087CE ... Spring Stadium 3
+
+$00FF9A ... Diamond Dust 1
+$00F946 ... Diamond Dust 2
+$00F1CA ... Diamond Dust 3
+
+$00A51E ... Vulcano Valley 1
+$00AD3A ... Vulcano Valley 2
+$009DF8 ... Vulcano Valley 3
+
+$011C78 ... Gene Gadget 1
+$011540 ... Gene Gadget 2
+$0110BA ... Gene Gadget 3
+
+$013336 ... Panic Puppet 1
+$013B38 ... Panic Puppet 2
+$01258C ... Panic Puppet 3
+
+$014170 ... Final Fight

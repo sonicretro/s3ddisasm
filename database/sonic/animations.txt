@@ -1,0 +1,21 @@
+These values are set in $FFC27A
+
+$0000 ... Idle
+$0001 ... Running
+$0002 ... Spinning
+$0003 ... Ducking
+$0004 ... Stopping (left)
+$0005 ... Stopping (right)
+$0006 ... Stopping (back)
+$0007 ... Spindash
+$0008 ... Getting hurt
+$0009 ... On a big ring
+$000A ... Stopping? (rotating)
+$000B ... Waiting
+$000C ... On fans
+$000D ... Spring (with falling)
+$000E ... Spring (no falling)
+$000F ... Sliding (wheeeeeeeee!)
+$0010 ... Rotating (RRz)
+$0011 ... Lose a life :(
+$0012 ... Frozen (DDz)

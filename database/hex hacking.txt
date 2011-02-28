@@ -1,0 +1,39 @@
+--=============--
+    MAIN MENU
+--=============--
+
+$01F230 ... Signed word ..... Speed when going from Start to Controls
+$01F25E ... Signed word ..... Speed when going from Sound Test to Controls
+$01F2A4 ... Signed word ..... Speed when going from Controls to Start
+$01F2C8 ... Signed word ..... Speed when going from Sound Test to Start
+$01F318 ... Signed word ..... Speed when going from Controls to Sound Test
+$01F344 ... Signed word ..... Speed when going from Start to Sound Test
+
+--================--
+    LEVEL SELECT
+--================--
+
+$020CD0 ... Unsigned word ... BGM ID of the Level Select screen
+$020F24 ... Signed word ..... Y coordinate base for the LEVEL SELECT text
+
+--================--
+    SHIELD STUFF
+--================--
+
+$00B6EA ... Unsigned word ... Shield that protects against VVz lava
+$00BA20 ... Unsigned word ... Shield that protects against VVz small fireballs
+$00BAB4 ... Unsigned word ... Shield that protects against VVz fireball chain bases
+$015FC4 ... Unsigned word ... Shield that protects against PPz turrets
+$017114 ... Unsigned word ... Shield that protects against VVz fireball chains
+$017144 ... Unsigned word ... Shield that protects against VVz flamethrower fireballs
+$0171D0 ... Unsigned word ... Shield that protects against RRz flamethrower fireballs
+$0198A2 ... Unsigned word ... Shield that leaves a traill on homing (normal)
+$0198AA ... Unsigned word ... Shield that leaves a traill on homing (or'd with $8000)
+
+--=================--
+    MISCELLANEOUS
+--=================--
+
+$001EE6 ... Unsigned word ... Number of 32x32 tiles to draw when drawing an entire row
+$01B704 ... Unsigned word ... Maximum number of rings to scatter when getting hurt
+$01B70A ... Unsigned word ... Number of rings to scatter if exceeding the maxmimum

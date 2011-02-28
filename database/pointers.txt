@@ -1,0 +1,11 @@
+--===========--
+    IN CODE
+--===========--
+
+$01A530 ... Absolute ....... Graphics used by the title card (RNC)
+$01A54A ... Absolute - 4 ... Table with title card tile info
+$01FE7A ... Absolute ....... Graphics used by big letters in credits (RNC)
+$020C02 ... Absolute ....... Graphics used by level select title (RNC)
+$021142 ... Absolute ....... Graphics used by big letters in SS score tally (RNC)
+$021822 ... Absolute ....... Graphics used by big letters in level score tally (RNC)
+$022FE0 ... Absolute ....... Graphics used by the "TRY AGAIN" text (RNC)

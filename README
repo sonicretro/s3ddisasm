@@ -1,0 +1,15 @@
+To get the disassembly, see 'IDCFILES'.
+    -- Sik the hedgehog - Oct 17th, 2008
+
+----------
+
+Some labels you may want to check:
+
+> IngameMode - Main subroutine for in-game code
+> LoadLevel - Main subroutine for loading levels
+> InitLevel - Initializes level-specific* stuff
+> RunLevel - Level-specific* behaviour
+> RunSonic - Sonic's behaviour code
+
+*Boss code counts as level-specific.
+    -- Sik the hedgehog - Sep 13rd, 2008

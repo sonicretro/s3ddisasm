@@ -1,0 +1,52 @@
+--=================--
+    HEADER FORMAT
+--=================--
+
++$00 ... Pointer ... Object data (RNC'd)
++$04 ... Pointer ... Collision layout (RNC'd)
++$08 ... Pointer ... Plane B graphics (RNC'd)
++$0C ... Pointer ... 
++$10 ... Pointer ... 32x32 mappings for plane B
++$14 ... Pointer ... Plane A graphics
++$18 ... Pointer ... Level layout
++$1C ... Pointer ... List of miscellaneous graphics to load
++$20 ... Pointer ... Sonic data
++$24 ... Word ...... Dummy? (always $0000)
++$26 ... Byte ...... Index of 1st palette
++$27 ... Byte ...... Index of 2nd palette
++$28 ... Byte ...... Index of 3rd palette
++$29 ... Byte ...... Index of 4th palette
+
+--=================--
+    LAYOUT FORMAT
+--=================--
+
+OK, this one is tricky. First there's a $100-sized list containing word
+offsets from the address. Each offset belongs to a different tile row.
+
+[to be continued]
+
+--=============================================--
+    GRAPHICS LIST (POINTED BY +$1C IN HEADER)
+--=============================================--
+
++$00 ... Word ...... If 1, continue reading. If 0, end of list, stop reading.
++$02 ... Pointer ... Graphics to load (RNC compressed)
++$06 ... Pointer ... Where to decompress (should be RAM, d'oh)
++$10 ... Word ......
++$12 ... Word ......
+
+--==============--
+    SONIC DATA
+--==============--
+
++$00 ... Word ...... Sonic X coordinate
++$02 ... Word ...... Sonic Z coordinate
++$04 ... Word ...... Sonic angle ($800 = full circle)
+
+--=================--
+    MISCELLANEOUS
+--=================--
+
+$000A2C ... Word[22] ... Level order
+$024F7A ... Word[22] ... BGM for each level

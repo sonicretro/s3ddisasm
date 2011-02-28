@@ -1,0 +1,58 @@
+--=================--
+     LEVEL ORDER
+--=================--
+
+Below is the order of the levels used in the game. 
+$000A2D is the level entered upon pressing 'START'.
+Each value after that is the next level in the sequence.
+The level values are listed at the bottom.
+
+$000A2D ... Green Grove Zone 1
+$000A2F ... Green Grove Zone 2
+$000A31 ... Green Grove Zone 3
+$000A33 ... Rusty Ruin Zone 1
+$000A35 ... Rusty Ruin Zone 2
+$000A37 ... Rusty Ruin Zone 3
+$000A39 ... Spring Stadium Zone 1
+$000A3B ... Spring Stadium Zone 2
+$000A3D ... Spring Stadiun Zone 3
+$000A3F ... Diamond Dust Zone 1
+$000A41 ... Diamond Dust Zone 2
+$000A43 ... Diamond Dust Zone 3
+$000A45 ... Volcano Valley Zone 1
+$000A47 ... Volcano Valley Zone 2
+$000A49 ... Volcano Valley Zone 3
+$000A4B ... Gene Gadget Zone 1
+$000A4D ... Gene Gadget Zone 2
+$000A4F ... Gene Gadget Zone 3
+$000A51 ... Panic Puppet Zone 1
+$000A53 ... Panic Puppet Zone 2
+$000A55 ... Panic Puppet Zone 3
+$000A57 ... The Final Fight
+
+--=================--
+    LEVEL VALUES
+--=================--
+
+01 ... Green Grove Zone 1
+02 ... Green Grove Zone 2
+03 ... Green Grove Zone 3
+04 ... Gene Gadget Zone 1
+05 ... Gene Gadget Zone 2
+06 ... Rusty Ruin Zone 2
+07 ... Rusty Ruin Zone 1
+08 ... Rusty Ruin Zone 3
+09 ... Diamond Dust Zone 1
+0A ... Diamond Dust Zone 2
+0B ... Diamond Dust Zone 3
+0C ... Volcano Valley Zone 2
+0D ... Volcano Valley Zone 1
+0E ... Volcano Valley Zone 3
+0F ... Spring Stadium Zone 1
+10 ... Spring Stadium Zone 2
+11 ... Spring Stadium Zone 3
+12 ... Gene Gadget Zone 3
+13 ... Panic Puppet Zone 2
+14 ... Panic Puppet Zone 1
+15 ... Panic Puppet Zone 3
+16 ... The Final Fight

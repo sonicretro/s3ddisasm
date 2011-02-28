@@ -1,0 +1,17 @@
+The disassembly is in IDA64 format (yes, IDA64 runs on Win32). Please don't
+complain about "binary blobs". If you don't want it, then go and search for
+a program that can do the same as IDA but with pure source code, and that
+runs on Win32. Then I'll switch to pure source code. Some stuff will have to
+be redone though (like adding the LevelHeader structure explicitly into the
+source code).
+    -- Sik the hedgehog - Sep 13rd, 2008
+
+The contents in the database are a bit outdated, so you may want to update
+them or even give it a better formatting. Also all the data must be merged,
+as well as adding it to the disassembly.
+    -- Sik the hedgehog - Sep 13rd, 2008
+
+Also, all local variables must be renamed. My fault, they'll clash on
+assemblers =[ Also, even if that's done, it won't work on ASMX because it
+doesn't support "d*.b" pseudo-instructions.
+    -- Sik the hedgehog - Sep 13rd, 2008

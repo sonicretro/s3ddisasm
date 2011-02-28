@@ -1,0 +1,11 @@
+* Renamed the 'database' folder to 'old_database', I want to start a new
+  clean one. Please help :) New database should be in... 'database' :P But
+  before we start I'd like some suggestions on how to do it.
+
+* Fixed as most local labels I could find to add an explicit @ in front of
+  them so assemblers could catch them as real local labels (or at least
+  ASM68K...).
+
+* Labeled some of the monitor code.
+
+    -- Sik @ Oct 24th, 2008
