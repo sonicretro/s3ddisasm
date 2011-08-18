@@ -62,7 +62,7 @@ zFadeDelayTimeout		=	1C0Fh
 
 zPauseFlag				=	1C10h
 zHaltFlag				=	1C11h
-zFM2Settings			=	1C12h
+zFM3Settings			=	1C12h
 zTempoAccumulator		=	1C13h
 unk_1C15				=	1C15h				; Set twice, never read
 zFadeToPrevFlag			=	1C16h
@@ -95,9 +95,9 @@ PlaySegaPCMFlag			=	1C3Fh
 ; Max number of music channels: 6 FM + 3 PSG or 1 DAC + 5 FM + 3 PSG
 zTracksStart			=	1C40h
 zSongFM6_DAC			=	zTracksStart+0*zTrackSz		; Music DAC or FM6 track
-zSongFM0				=	zTracksStart+1*zTrackSz
-zSongFM1				=	zTracksStart+2*zTrackSz
-zSongFM2				=	zTracksStart+3*zTrackSz
+zSongFM1				=	zTracksStart+1*zTrackSz
+zSongFM2				=	zTracksStart+2*zTrackSz
+zSongFM3				=	zTracksStart+3*zTrackSz
 zSongFM4				=	zTracksStart+4*zTrackSz
 zSongFM5				=	zTracksStart+5*zTrackSz
 zSongPSG1				=	zTracksStart+6*zTrackSz
@@ -107,9 +107,9 @@ zTracksEnd				=	zTracksStart+9*zTrackSz
 ; This is RAM for backup of songs (e.g., for 1-up jingle)
 zTracksSaveStart		=	zTracksEnd
 zSaveSongFM6_DAC		=	zTracksSaveStart+0*zTrackSz
-zSaveSongFM0			=	zTracksSaveStart+1*zTrackSz
-zSaveSongFM1			=	zTracksSaveStart+2*zTrackSz
-zSaveSongFM2			=	zTracksSaveStart+3*zTrackSz
+zSaveSongFM1			=	zTracksSaveStart+1*zTrackSz
+zSaveSongFM2			=	zTracksSaveStart+2*zTrackSz
+zSaveSongFM3			=	zTracksSaveStart+3*zTrackSz
 zSaveSongFM4			=	zTracksSaveStart+4*zTrackSz
 zSaveSongFM5			=	zTracksSaveStart+5*zTrackSz
 zSaveSongPSG1			=	zTracksSaveStart+6*zTrackSz
@@ -120,7 +120,7 @@ zTracksSaveEnd			=	zTracksSaveStart+9*zTrackSz
 ; Note this overlaps with the save RAM for 1-up sound, above
 ; Max number of SFX channels: 4 FM + 3 PSG
 zTracksSFXStart			=	zTracksEnd
-zSFX_FM2				=	zTracksSFXStart+0*zTrackSz
+zSFX_FM3				=	zTracksSFXStart+0*zTrackSz
 zSFX_FM4				=	zTracksSFXStart+1*zTrackSz
 zSFX_FM5				=	zTracksSFXStart+2*zTrackSz
 zSFX_FM6				=	zTracksSFXStart+3*zTrackSz
@@ -131,7 +131,7 @@ zTracksSFXEnd			=	zTracksSFXStart+7*zTrackSz
 
 ; Track data (each song track)
 ; Playback control bits:
-; 	0 (01h)		Noise channel (PSG) or FM2 special mode (FM)
+; 	0 (01h)		Noise channel (PSG) or FM3 special mode (FM)
 ; 	1 (02h)		Do not attack next note
 ; 	2 (04h)		SFX is overriding this track
 ; 	3 (08h)		'Alternate SMPS mode' flag
@@ -142,8 +142,8 @@ zTracksSFXEnd			=	zTracksSFXStart+7*zTrackSz
 zTrackPlaybackControl	= 0
 ; Track data (each song track)
 ; Voice control bits:
-; 	0-1    		FM channel assignment bits (00 = FM0 or FM4, 01 = FM1 or FM5, 10 = FM2 or FM6/DAC, 11 = invalid)
-; 	2 (04h)		For FM/DAC channels, selects if reg/data writes are bound for FM1 (set) or FM0 (unset)
+; 	0-1    		FM channel assignment bits (00 = FM1 or FM4, 01 = FM2 or FM5, 10 = FM3 or FM6/DAC, 11 = invalid)
+; 	2 (04h)		For FM/DAC channels, selects if reg/data writes are bound for part II (set) or part I (unset)
 ; 	3 (08h)		Unknown/unused
 ; 	4 (10h)		Unknown/unused
 ; 	5-6    		PSG Channel assignment bits (00 = PSG1, 01 = PSG2, 10 = PSG3, 11 = Noise)
@@ -429,64 +429,64 @@ zInitAudioDriver:
 
 ; =============== S U B	R O U T	I N E =======================================
 ;
-; Writes a reg/data pair to FM0 or FM1
+; Writes a reg/data pair to part I or II
 ;
 ; Input:  a    Value for register
 ;         c    Value for data
 ;         ix   Pointer to track RAM
 
 ;sub_AF
-zWriteFM0orFM1:
+zWriteFMIorII:
 		bit	7, (ix+zTrackVoiceControl)		; Is this a PSG track?
 		ret	nz								; Is so, quit
 		bit	2, (ix+zTrackPlaybackControl)	; Is SFX overriding this track?
 		ret	nz								; Return if yes
 		add	a, (ix+zTrackVoiceControl)		; Add the channel bits to the register address
 		bit	2, (ix+zTrackVoiceControl)		; Is this the DAC channel or FM4 or FM5 or FM6?
-		jr	nz, zWriteFM1_reduced			; If yes, write reg/data pair to FM1;
-											; otherwise, write reg/data pair as is to FM0.
-; End of function zWriteFM0orFM1
+		jr	nz, zWriteFMII_reduced			; If yes, write reg/data pair to part II;
+											; otherwise, write reg/data pair as is to part I.
+; End of function zWriteFMIorII
 
 
 ; =============== S U B	R O U T	I N E =======================================
 ;
-; Writes a reg/data pair to FM0
+; Writes a reg/data pair to part I
 ;
 ; Input:  a    Value for register
 ;         c    Value for data
 
 ;sub_C2
-zWriteFM0:
+zWriteFMI:
 		ld	(zYM2612_A0), a					; Select YM2612 register
 		nop									; Wait
 		ld	a, c							; a = data to send
 		ld	(zYM2612_D0), a					; Send data to register
 		ret
-; End of function zWriteFM0
+; End of function zWriteFMI
 
 ; ---------------------------------------------------------------------------
-; START	OF FUNCTION CHUNK FOR zWriteFM0orFM1
+; START	OF FUNCTION CHUNK FOR zWriteFMIorII
 
 ;loc_CB
-zWriteFM1_reduced:
-		sub	4								; Strip 'bound to FM1 regs' bit
-; END OF FUNCTION CHUNK	FOR zWriteFM0orFM1
+zWriteFMII_reduced:
+		sub	4								; Strip 'bound to part II regs' bit
+; END OF FUNCTION CHUNK	FOR zWriteFMIorII
 
 ; =============== S U B	R O U T	I N E =======================================
 ;
-; Writes a reg/data pair to FM1
+; Writes a reg/data pair to part II
 ;
 ; Input:  a    Value for register
 ;         c    Value for data
 
 ;sub_CD
-zWriteFM1:
+zWriteFMII:
 		ld	(zYM2612_A1), a					; Select YM2612 register
 		nop									; Wait
 		ld	a, c							; a = data to send
 		ld	(zYM2612_D1), a					; Send data to register
 		ret
-; End of function zWriteFM1
+; End of function zWriteFMII
 
 ; ---------------------------------------------------------------------------
 ; ===========================================================================
@@ -565,8 +565,8 @@ zlocCheckFadeIn:
 		ld	ix, zTracksStart				; ix = track RAM
 		bit	7, (ix+zTrackPlaybackControl)	; Is FM6/DAC track playing?
 		call	nz, zUpdateDACTrack			; Branch if yes
-		ld	b, (zTracksEnd-zSongFM0)/zTrackSz	; Number of tracks
-		ld	ix, zSongFM0					; ix = FM0 track RAM
+		ld	b, (zTracksEnd-zSongFM1)/zTrackSz	; Number of tracks
+		ld	ix, zSongFM1					; ix = FM1 track RAM
 		jr	+								; Play all tracks
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -645,7 +645,7 @@ zUpdateFMorPSGTrack:
 ;
 ; Input:   ix    Pointer to track RAM
 ;          hl    Frequency to upload
-;          de    For FM2 in special mode, pointer to extra FM2 frequency data (never correctly set)
+;          de    For FM3 in special mode, pointer to extra FM3 frequency data (never correctly set)
 ; Output:  a     Trashed
 ;          bc    Trashed
 ;          hl    Trashed
@@ -655,20 +655,20 @@ zUpdateFMorPSGTrack:
 zFMSendFreq:
 		bit	2, (ix+zTrackPlaybackControl)	; Is SFX overriding this track?
 		ret	nz								; Return if yes
-		bit	0, (ix+zTrackPlaybackControl)	; Is track in special mode (FM2 only)?
+		bit	0, (ix+zTrackPlaybackControl)	; Is track in special mode (FM3 only)?
 		jp	nz, +							; Branch if yes
 
 -		ld	a, 0A4h							; Command to update frequency MSB
 		ld	c, h							; High byte of frequency
-		call	zWriteFM0orFM1				; Send it to YM2612
+		call	zWriteFMIorII				; Send it to YM2612
 		ld	a, 0A0h							; Command to update frequency LSB
 		ld	c, l							; Low byte of frequency
-		call	zWriteFM0orFM1				; Send it to YM2612
+		call	zWriteFMIorII				; Send it to YM2612
 		ret
 ; ---------------------------------------------------------------------------
 +
 		ld	a, (ix+zTrackVoiceControl)		; a = voice control byte
-		cp	2								; Is this FM2?
+		cp	2								; Is this FM3?
 		jr	nz, -							; Branch if not
 		ld	b, zSpecialFreqCommands_End-zSpecialFreqCommands	; Number of entries
 		ld	hl, zSpecialFreqCommands		; Lookup table
@@ -690,11 +690,11 @@ zFMSendFreq:
 		add	hl, bc							; hl = full frequency for operator
 		push	af							; Save af
 		ld	c, h							; High byte of frequency
-		call	zWriteFM0					; Sent it to YM2612
+		call	zWriteFMI					; Sent it to YM2612
 		pop	af								; Restore af
 		sub	4								; Move on to frequency LSB
 		ld	c, l							; Low byte of frequency
-		call	zWriteFM0					; Sent it to YM2612
+		call	zWriteFMI					; Sent it to YM2612
 		pop	hl								; Restore hl
 		pop	bc								; Restore bc
 		djnz	-							; Loop for all operators
@@ -918,7 +918,7 @@ zTrackAllOpsOff:
 		or	0F0h							; We want only the FM channel assignment bits
 		ld	c, a							; Key off for all operators
 		ld	a, 28h							; Select key on/of register
-		call	zWriteFM0					; Send command to YM2612
+		call	zWriteFMI					; Send command to YM2612
 		ret
 ; END OF FUNCTION CHUNK	FOR zUpdateFMorPSGTrack
 
@@ -956,7 +956,7 @@ zKeyOff:
 ;loc_367
 zKeyOnOff:
 		ld	a, 28h							; Write to KEY ON/OFF port
-		call	zWriteFM0					; Send it
+		call	zWriteFMI					; Send it
 		ret
 ; End of function zKeyOnOff
 
@@ -994,7 +994,7 @@ zDoFMFlutter:
 		and	7Fh								; Strip sign bit
 		ld	c, a							; c = TL + flutter
 		ld	a, (de)							; a = YM2612 register
-		call	zWriteFM0orFM1				; Send TL data to YM2612
+		call	zWriteFMIorII				; Send TL data to YM2612
 +
 		pop	bc								; Restore bc
 		inc	de								; Advance to next YM2612 register
@@ -1269,7 +1269,7 @@ zSendFMInstrument:
 		ld	de, zFMInstrumentRegTable		; de = pointer to register output table
 		ld	c, (ix+zTrackAMSFMSPan)			; Send track AMS/FMS/panning
 		ld	a, 0B4h							; Select AMS/FMS/panning register
-		call	zWriteFM0orFM1				; Set track data
+		call	zWriteFMIorII				; Set track data
 		call	zSendFMInstrData			; Send data to register
 		ld	(ix+zTrackFeedbackAlgo), a		; Save current feedback/algorithm
 		ld	b, zFMInstrumentOperatorTable_End-zFMInstrumentOperatorTable	; Number of commands to issue
@@ -1296,7 +1296,7 @@ zSendFMInstrData:
 		inc	de								; Advance pointer
 		ld	c, (hl)							; Get value from instrument RAM
 		inc	hl								; Advance pointer
-		call	zWriteFM0orFM1				; Write track data
+		call	zWriteFMIorII				; Write track data
 		ret
 ; End of function zSendFMInstrData
 
@@ -1561,7 +1561,7 @@ zClearNextSound:
 ; The first byte in every pair (always 80h) is default value for playback control bits.
 ; The second byte in every pair goes as follows:
 ; The first is for DAC; then 0, 1, 2 then 4, 5, 6 for the FM channels (the missing 3
-; is the gap between FM0 and FM1 for YM2612 port writes).
+; is the gap between parts I and II for YM2612 port writes).
 zFMDACInitBytes:
 		db   80h,   6, 80h,   0, 80h,   1, 80h,   2, 80h,   4, 80h,   5, 80h,   6
 ;loc_6A3
@@ -1665,8 +1665,8 @@ zSFXTrackInitLoop:
 		pop		hl							; hl = pointer to SFX track data
 		ldi									; *de++ = *hl++ (initial playback control)
 		ld	a, (de)							; Get the voice control byte from track RAM (to deal with SFX already there)
-		cp	2								; Is this FM2?
-		call	z, zFM2NormalMode			; Set FM2 to normal mode if so
+		cp	2								; Is this FM3?
+		call	z, zFM3NormalMode			; Set FM3 to normal mode if so
 		ldi									; *de++ = *hl++ (copy channel identifier)
 		ld	a, (zSFXTempoDivider)			; Get SFX tempo divider
 		ld	(de), a							; Store it to RAM
@@ -1709,7 +1709,7 @@ zGetSFXChannelPointers:
 		ld	a, c							; a = c
 		bit	2, a							; Is this FM4, FM5 or FM6?
 		jr	z, ++							; Branch if not
-		dec	a								; Remove gap between FM2 and FM4+
+		dec	a								; Remove gap between FM3 and FM4+
 		jr	++
 ; ---------------------------------------------------------------------------
 +
@@ -1726,7 +1726,7 @@ zGetSFXChannelPointers:
 		srl	a
 		add	a, 2							; Compensate for subtration below
 +
-		sub	2								; Start table at FM2
+		sub	2								; Start table at FM3
 		ld	(zSFXSaveIndex), a				; Save index of overridden channel
 		push	af							; Save af
 		ld	hl, zSFXChannelData				; Pointer table for track RAM
@@ -1775,7 +1775,7 @@ zZeroFillTrackRAM:
 ; ---------------------------------------------------------------------------
 ;zloc_7DF
 zSFXChannelData:
-		dw  zSFX_FM2						; FM2
+		dw  zSFX_FM3						; FM3
 		dw  zSFX_FM4						; FM4
 		dw  zSFX_FM5						; FM5
 		dw  zSFX_FM6						; FM6 or DAC
@@ -1785,7 +1785,7 @@ zSFXChannelData:
 		dw  zSFX_PSG3						; PSG3/Noise
 ;zloc_7EF
 zSFXOverriddenChannel:
-		dw  zSongFM2						; FM2
+		dw  zSongFM3						; FM3
 		dw  zSongFM4						; FM4
 		dw  zSongFM5						; FM5
 		dw  zSongFM6_DAC					; FM6 or DAC
@@ -1816,8 +1816,8 @@ zPauseUnpause:
 		ld	a, (zFadeOutTimeout)			; Get fade timeout
 		or	a								; Is it zero?
 		jp	nz, zMusicFade					; Stop all music if not
-		ld	ix, zSongFM0					; Start with FM0 track
-		ld	b, (zSongPSG2-zSongFM0)/zTrackSz	; Number of tracks
+		ld	ix, zSongFM1					; Start with FM1 track
+		ld	b, (zSongPSG2-zSongFM1)/zTrackSz	; Number of tracks
 
 -		ld	a, (zHaltFlag)					; Get halt flag
 		or	a								; Is song halted?
@@ -1827,7 +1827,7 @@ zPauseUnpause:
 +
 		ld	c, (ix+zTrackAMSFMSPan)			; Get track AMS/FMS/panning
 		ld	a, 0B4h							; Command to select AMS/FMS/panning register
-		call	zWriteFM0orFM1				; Write data to YM2612
+		call	zWriteFMIorII				; Write data to YM2612
 +
 		ld	de, zTrackSz					; Spacing between tracks
 		add	ix, de							; Advance to next track
@@ -1843,7 +1843,7 @@ zPauseUnpause:
 		jr	nz, +							; Branch if yes
 		ld	c, (ix+zTrackAMSFMSPan)			; Get track AMS/FMS/panning
 		ld	a, 0B4h							; Command to select AMS/FMS/panning register
-		call	zWriteFM0orFM1				; Write data to YM2612
+		call	zWriteFMIorII				; Write data to YM2612
 +
 		ld	de, zTrackSz					; Spacing between tracks
 		add	ix, de							; Go to next track
@@ -1940,8 +1940,8 @@ zDoMusicFadeIn:
 		ret	nz								; Branch if it is not yet zero
 		ld	a, (zFadeDelayTimeout)			; Get current fade delay timeout
 		ld	(zFadeDelay), a					; Reset to starting fade delay
-		ld	b, (zSongPSG1-zSongFM0)/zTrackSz	; Number of tracks
-		ld	ix, zSongFM0					; ix = start of FM0 RAM
+		ld	b, (zSongPSG1-zSongFM1)/zTrackSz	; Number of tracks
+		ld	ix, zSongFM1					; ix = start of FM1 RAM
 		ld	de, zTrackSz					; Spacing between tracks
 
 -		ld	a, (ix+zTrackVolume)			; Get track volume
@@ -1986,7 +1986,7 @@ zMusicFade:
 		ld	(zTempoSpeedup), a				; Fade in normal speed
 		
 		ld	ix, zFMDACInitBytes				; Initialization data for channels
-		ld	b, (zSongPSG2-zSongFM0)/zTrackSz	; Number of channels
+		ld	b, (zSongPSG2-zSongFM1)/zTrackSz	; Number of channels
 
 -		push	bc							; Save bc for loop
 		call	zFMSilenceChannel			; Silence track's channel
@@ -2002,15 +2002,15 @@ zMusicFade:
 		call	zPSGSilenceAll				; Silence PSG
 		ld	c, 0							; Write a zero...
 		ld	a, 2Bh							; ... to DAC enable register
-		call	zWriteFM0					; Disable DAC
+		call	zWriteFMI					; Disable DAC
 
 ;loc_979
-zFM2NormalMode:
+zFM3NormalMode:
 		xor	a								; a = 0
-		ld	(zFM2Settings), a				; Save FM2 settings
-		ld	c, a							; FM2 mode: normal mode
-		ld	a, 27h							; FM2 special settings
-		call	zWriteFM0					; Set it
+		ld	(zFM3Settings), a				; Save FM3 settings
+		ld	c, a							; FM3 mode: normal mode
+		ld	a, 27h							; FM3 special settings
+		call	zWriteFMI					; Set it
 		jp	zClearNextSound
 ; End of function zMusicFade
 
@@ -2035,12 +2035,12 @@ zPauseAudio:
 		call	zPSGSilenceAll				; Redundant, as function falls-through to it anyway
 		push	bc							; Save bc
 		push	af							; Save af
-		ld	b, 3							; FM0/FM1/FM2
-		ld	a, 0B4h							; Command to select AMS/FMS/panning register (FM0)
+		ld	b, 3							; FM1/FM2/FM3
+		ld	a, 0B4h							; Command to select AMS/FMS/panning register (FM1)
 		ld	c, 0							; AMS=FMS=panning=0
 
 -		push	af							; Save af
-		call	zWriteFM0					; Write reg/data pair to YM2612
+		call	zWriteFMI					; Write reg/data pair to YM2612
 		pop	af								; Restore af
 		inc	a								; Advance to next channel
 		djnz	-							; Loop for all channels
@@ -2049,17 +2049,17 @@ zPauseAudio:
 		ld	a, 0B4h							; Command to select AMS/FMS/panning register
 
 -		push	af							; Save af
-		call	zWriteFM1					; Write reg/data pair to YM2612
+		call	zWriteFMII					; Write reg/data pair to YM2612
 		pop	af								; Restore af
 		inc	a								; Advance to next channel
 		djnz	-							; Loop for all channels
 
-		ld	c, 0							; Note off for all operators of FM0
-		ld	b, 6							; 5 FM channels + 1 gap between FM2 and FM4 (NOT FM6)
+		ld	c, 0							; Note off for all operators
+		ld	b, 6							; 5 FM channels + 1 gap between FM3 and FM4 (NOT FM6)
 		ld	a, 28h							; Command to send note on/off
 
 -		push	af							; Save af
-		call	zWriteFM0					; Write reg/data pair to YM2612
+		call	zWriteFMI					; Write reg/data pair to YM2612
 		inc	c								; Next channel
 		pop	af								; Restore af
 		djnz	-							; Loop for all channels
@@ -2174,7 +2174,7 @@ zFMOperatorWriteLoop:
 		ld	b, 4							; Loop 4 times
 
 -		push	af							; Save af
-		call	zWriteFM0orFM1				; Write to FM0 or FM1, as appropriate
+		call	zWriteFMIorII				; Write to part I or II, as appropriate
 		pop	af								; Restore af
 		add	a, 4							; a += 4
 		djnz	-							; Loop
@@ -2213,8 +2213,8 @@ zFadeInToPrevious:
 		ld	a, (zTracksStart)				; a = FM6/DAC track playback control
 		or	84h								; Set 'track is playing' and 'track is resting' flags
 		ld	(zTracksStart), a				; Set new value
-		ld	ix, zSongFM0					; ix = pointer to FM0 track RAM
-		ld	b, (zTracksEnd-zSongFM0)/zTrackSz	; Number of tracks
+		ld	ix, zSongFM1					; ix = pointer to FM1 track RAM
+		ld	b, (zTracksEnd-zSongFM1)/zTrackSz	; Number of tracks
 
 -		ld	a, (ix+zTrackPlaybackControl)	; a = track playback control
 		or	84h								; Set 'track is playing' and 'track is resting' flags
@@ -2304,7 +2304,7 @@ zUpdateDACTrack_cont:
 		push	de							; Save de
 		ex	af, af'							; Save af
 		call	zKeyOffIfActive				; Kill note (will do nothing if 'do not attack' is on)
-		call	zFM2NormalMode				; Set FM2 to normal mode
+		call	zFM3NormalMode				; Set FM3 to normal mode
 		ex	af, af'							; Restore af
 		ld	ix, zTracksStart				; ix = pointer to start of track data
 		bit	2, (ix+zTrackPlaybackControl)	; Is SFX overriding DAC channel?
@@ -2366,7 +2366,7 @@ zCoordFlagSwitchTable:
 		dw cfConditionalJump				; 0EBh
 		dw cfChangePSGVolume				; 0ECh
 		dw cfSetKey							; 0EDh
-		dw cfSendFM0						; 0EEh
+		dw cfSendFMI						; 0EEh
 		dw cfSetVoice						; 0EFh
 		dw cfModulation						; 0F0h
 		dw cfAlterModulation				; 0F1h
@@ -2382,7 +2382,7 @@ zCoordFlagSwitchTable:
 		dw cfAddKey							; 0FBh
 		dw cfLoopContinuousSFX				; 0FCh
 		dw cfToggleAlternateSMPS			; 0FDh
-		dw cfFM2SpecialMode					; 0FEh
+		dw cfFM3SpecialMode					; 0FEh
 		dw cfMetaCF							; 0FFh
 ;loc_C3C
 zExtraCoordFlagSwitchTable:
@@ -2424,7 +2424,7 @@ cfPanningAMSFMS:
 		ld	(ix+zTrackAMSFMSPan), a			; Store new value in track RAM
 		ld	c, a							; c = new AMS/FMS/panning
 		ld	a, 0B4h							; a = YM2612 register to write to
-		call	zWriteFM0orFM1				; Set new panning/AMS/FMS
+		call	zWriteFMIorII				; Set new panning/AMS/FMS
 		pop	de								; Restore de
 		ret
 ; End of function cfPanningAMSFMS
@@ -2582,7 +2582,7 @@ zSendTL:
 		and	7Fh								; Strip sign bit
 		ld	c, a							; c = new volume for operator
 		ld	a, (de)							; a = register write command
-		call	zWriteFM0orFM1				; Send it to YM2612
+		call	zWriteFMIorII				; Send it to YM2612
 		inc	de								; Advance pointer
 		inc	hl								; Advance pointer
 		djnz	-							; Loop
@@ -2680,16 +2680,16 @@ cfSetKey:
 		ret
 
 ; =============== S U B	R O U T	I N E =======================================
-; Sends an FM command to the YM2612. The command is sent to FM0, so not all
+; Sends an FM command to the YM2612. The command is sent to FMI, so not all
 ; registers can be set using this coord. flag (in particular, channels FM4,
 ; FM5 and FM6 cannot (in general) be affected).
 ;
 ; Has 2 parameter bytes: a 1-byte register selector and a 1-byte register data.
 ;
 ;loc_D20
-cfSendFM0:
+cfSendFMI:
 		call	+							; Get parameters for FM command
-		call	zWriteFM0					; Send it to YM2612
+		call	zWriteFMI					; Send it to YM2612
 		ret
 +
 		ex	de, hl							; Exchange de and hl
@@ -2698,7 +2698,7 @@ cfSendFM0:
 		ld	c, (hl)							; Get YM2612 register data
 		ex	de, hl							; Exchange back de and hl
 		ret
-; End of function cfSendFM0
+; End of function cfSendFMI
 
 ; =============== S U B	R O U T	I N E =======================================
 ; Change current instrument (FM), tone (PSG) or sample (DAC).
@@ -2835,15 +2835,15 @@ cfStopTrack:
 		jr	nz, zStopPSGTrack				; Branch if yes
 		bit	7, (ix+zTrackPlaybackControl)	; Is 'track playing' bit set?
 		jr	z, zStopCleanExit				; Exit if not
-		ld	a, 2							; a = 2 (FM2)
-		cp	(ix+zTrackVoiceControl)			; Is this track for FM2?
+		ld	a, 2							; a = 2 (FM3)
+		cp	(ix+zTrackVoiceControl)			; Is this track for FM3?
 		jr	nz, ++							; Branch if not
-		ld	a, 4Fh							; FM2 settings: special mode, enable and load A/B
-		bit	0, (ix+zTrackPlaybackControl)	; Is FM2 in special mode?
+		ld	a, 4Fh							; FM3 settings: special mode, enable and load A/B
+		bit	0, (ix+zTrackPlaybackControl)	; Is FM3 in special mode?
 		jr	nz, +							; Branch if yes
-		and	0Fh								; FM2 settings: normal mode, enable and load A/B
+		and	0Fh								; FM3 settings: normal mode, enable and load A/B
 +
-		call	zWriteFM2Settings			; Set the above FM2 settings
+		call	zWriteFM3Settings			; Set the above FM3 settings
 +
 		ld	a, (ix+zTrackVoiceIndex)		; Get FM instrument
 		or	a								; Is it positive?
@@ -2896,7 +2896,7 @@ zStopPSGTrack:
 ;
 ;loc_E38
 cfSetPSGNoise:
-		bit	2, (ix+zTrackVoiceControl)		; Is this a channel bound for FM1 (FM4, FM5, FM6/DAC)?
+		bit	2, (ix+zTrackVoiceControl)		; Is this a channel bound for part II (FM4, FM5, FM6/DAC)?
 		ret	nz								; Return if yes
 		ld	a, 0DFh							; Command to silence PSG3
 		ld	(zPSG), a						; Execute it
@@ -3082,20 +3082,20 @@ cfToggleAlternateSMPS:
 		ret
 
 ; =============== S U B	R O U T	I N E =======================================
-; If current track is FM2, it is put into special mode. The function is weird,
+; If current track is FM3, it is put into special mode. The function is weird,
 ; and may not work correctly (subject to verification).
 ;
 ; It has 4 1-byte parameters: all of them are indexes into a lookup table of
 ; unknown purpose, and must be in the 0-7 range. It is possible that this
-; lookup table held frequencies (or frequency shifts) for FM2 and its operators
+; lookup table held frequencies (or frequency shifts) for FM3 and its operators
 ; in special mode.
 ;
 ;loc_EE7
-cfFM2SpecialMode:
+cfFM3SpecialMode:
 		ld	a, (ix+zTrackVoiceControl)		; Get track's voice control
-		cp	2								; Is this FM2?
+		cp	2								; Is this FM3?
 		jr	nz, zTrackSkip3bytes			; Branch if not
-		set	0, (ix+zTrackPlaybackControl)	; Put FM2 in special mode
+		set	0, (ix+zTrackPlaybackControl)	; Put FM3 in special mode
 		ex	de, hl							; Exchange de and hl
 		call	nullsub_A					; Do nothing (this was likely supposed to set de to a sensible value)
 		ld	b, 4							; Loop counter: 4 parameter bytes
@@ -3123,21 +3123,21 @@ cfFM2SpecialMode:
 
 		ex	de, hl							; Exchange back de and hl
 		dec	de								; Put back last byte
-		ld	a, 4Fh							; FM2 settings: special mode, enable and load A/B
+		ld	a, 4Fh							; FM3 settings: special mode, enable and load A/B
 
 ; =============== S U B	R O U T	I N E =======================================
-; Set up FM2 special settings
+; Set up FM3 special settings
 ;
-; Input:   a    Settings for FM2
+; Input:   a    Settings for FM3
 ; Output:  c    Damaged
 ;sub_F10
-zWriteFM2Settings:
-		ld	(zFM2Settings), a				; Save FM2 settings
-		ld	c, a							; c = FM2 settings
-		ld	a, 27h							; Write data to FM2 settigns register
-		call	zWriteFM0					; Do it
+zWriteFM3Settings:
+		ld	(zFM3Settings), a				; Save FM3 settings
+		ld	c, a							; c = FM3 settings
+		ld	a, 27h							; Write data to FM3 settigns register
+		call	zWriteFMI					; Do it
 		ret
-; End of function zWriteFM2Settings
+; End of function zWriteFM3Settings
 
 ; =============== S U B	R O U T	I N E =======================================
 ; Eats 3 bytes from the song.
@@ -3147,7 +3147,7 @@ zTrackSkip3bytes:
 		inc	de								; ... and again.
 		ret
 ; ---------------------------------------------------------------------------
-; Unknown data used in cfFM2SpecialMode, above.
+; Unknown data used in cfFM3SpecialMode, above.
 loc_F1E:
 		dw    0, 132h, 18Eh, 1E4h, 234h, 27Eh, 2C2h, 2F0h
 
@@ -3294,7 +3294,7 @@ zSendSSGEGData:
 		ld	c, a							; c = data to send
 		ld	a, (hl)							; a = register to send to
 		inc	hl								; Advance pointer
-		call	zWriteFM0orFM1				; Send data to correct channel
+		call	zWriteFMIorII				; Send data to correct channel
 		djnz	-							; Loop for all registers
 		dec	de								; Rewind data pointer a bit
 		ret
@@ -3502,7 +3502,7 @@ zPlayDigitalAudio:
 		di									; Disable interrupts
 		ld	a, 2Bh							; DAC enable/disable register
 		ld	c, 0							; Value to disable DAC
-		call	zWriteFM0					; Send YM2612 command
+		call	zWriteFMI					; Send YM2612 command
 
 loc_1091:
 		ei									; Enable interrupts
@@ -3515,7 +3515,7 @@ loc_1091:
 		ld	a, 2Bh							; DAC enable/disable register
 		ld	c, 80h							; Value to enable DAC
 		di									; Disable interrupts
-		call	zWriteFM0					; Send YM2612 command
+		call	zWriteFMI					; Send YM2612 command
 		ei									; Re-enable interrupts
 		ld	iy, DecTable					; iy = pointer to jman2050 decode lookup table
 		ld	hl, zDACIndex					; hl = pointer to DAC index/flag
